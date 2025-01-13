@@ -1,5 +1,10 @@
 use chrono::{Datelike, NaiveDate};
 
+#[derive(Debug)]
+pub enum Error {
+    InvalidArvelie,
+}
+
 pub fn to_arvelie_month_day(date: NaiveDate) -> String {
     let month_num = date.ordinal() / 14;
     let month_letter = if month_num < 26 {
@@ -12,9 +17,9 @@ pub fn to_arvelie_month_day(date: NaiveDate) -> String {
     format!("{}{:02}", month_letter, day_num)
 }
 
-pub fn from_arvelie_month_day(arv: &str, year: i32) -> Result<NaiveDate, String> {
+pub fn from_arvelie_month_day(arv: &str, year: i32) -> Result<NaiveDate, Error> {
     if !arv.is_ascii() {
-        return Err("lol not ascii".to_string());
+        return Err(Error::InvalidArvelie);
     }
 
     match arv.as_bytes() {
@@ -29,10 +34,10 @@ pub fn from_arvelie_month_day(arv: &str, year: i32) -> Result<NaiveDate, String>
                 26
             };
             let ordinal = day + month * 14 + 1;
-            Ok(NaiveDate::from_yo_opt(year, ordinal)
-                .ok_or(format!("lol out bounds - month = {month}, day = {day}"))?)
+            let date = NaiveDate::from_yo_opt(year, ordinal).ok_or(Error::InvalidArvelie)?;
+            Ok(date)
         }
-        _ => Err("lol no".to_string()),
+        _ => Err(Error::InvalidArvelie),
     }
 }
 
