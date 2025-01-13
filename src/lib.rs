@@ -42,47 +42,48 @@ mod tests {
 
     // TODO test errors
 
+    fn check_roundtrip(arvelie_date: &str, year: i32, month: u32, day: u32) {
+        let date = NaiveDate::from_ymd_opt(year, month, day).unwrap();
+        let md = to_arvelie_month_day(date);
+        assert_eq!(md, arvelie_date);
+
+        let back = from_arvelie_month_day(&md, year).unwrap();
+        assert_eq!(back, date, "got {}, expected {}", back, date);
+    }
+
     #[test]
     fn extra_year_day() {
-        // 14+01 2020-12-31
-        let date = NaiveDate::from_ymd_opt(2020, 12, 31).unwrap();
-        let md = to_arvelie_month_day(date);
-        assert_eq!(md, "+01");
+        // +01 2020-12-31
+        check_roundtrip("+01", 2020, 12, 31);
+    }
 
-        let back = from_arvelie_month_day(&md, 2020).unwrap();
-        assert_eq!(back, date, "got {}, expected {}", back, date);
+    #[test]
+    fn year_day() {
+        //
+        check_roundtrip("+00", 2019, 12, 31);
     }
 
     #[test]
     fn two_k_seven_feb_18() {
-        // 01D06 2007-02-18
-        let date = NaiveDate::from_ymd_opt(2007, 2, 18).unwrap();
-        let md = to_arvelie_month_day(date);
-        assert_eq!(md, "D06");
-
-        let back = from_arvelie_month_day(&md, 2007).unwrap();
-        assert_eq!(back, date, "got {}, expected {}", back, date);
+        // D06 2007-02-18
+        check_roundtrip("D06", 2007, 2, 18);
     }
 
     #[test]
     fn first_day_of_year() {
-        // 02A00 2008-01-01
-        let date = NaiveDate::from_ymd_opt(2008, 1, 1).unwrap();
-        let md = to_arvelie_month_day(date);
-        assert_eq!(md, "A00");
-
-        let back = from_arvelie_month_day(&md, 2008).unwrap();
-        assert_eq!(back, date, "got {}, expected {}", back, date);
+        // A00 2008-01-01
+        check_roundtrip("A00", 2008, 1, 1);
     }
 
     #[test]
     fn random_date() {
-        // 11F10 2009-03-22
-        let date = NaiveDate::from_ymd_opt(2009, 3, 22).unwrap();
-        let md = to_arvelie_month_day(date);
-        assert_eq!(md, "F10");
+        // F10 2009-03-22
+        check_roundtrip("F10", 2009, 3, 22);
+    }
 
-        let back = from_arvelie_month_day(&md, 2009).unwrap();
-        assert_eq!(back, date, "got {}, expected {}", back, date);
+    #[test]
+    fn today() {
+        // A12 2025-01-13
+        check_roundtrip("A12", 2025, 1, 13);
     }
 }
