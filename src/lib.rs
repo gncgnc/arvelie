@@ -1,6 +1,6 @@
 use chrono::{Datelike, NaiveDate};
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum Error {
     InvalidArvelie,
 }
@@ -28,6 +28,10 @@ pub fn from_arvelie_month_day(arv: &str, year: i32) -> Result<NaiveDate, Error> 
             let day1 = day1 - b'0';
 
             let day = ((day0 as u32) * 10) + day1 as u32;
+            if day > 13 {
+                return Err(Error::InvalidArvelie);
+            }
+
             let month = if *month != b'+' {
                 (*month - b'A') as u32
             } else {
@@ -44,8 +48,6 @@ pub fn from_arvelie_month_day(arv: &str, year: i32) -> Result<NaiveDate, Error> 
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    // TODO test errors
 
     fn check_roundtrip(arvelie_date: &str, year: i32, month: u32, day: u32) {
         let date = NaiveDate::from_ymd_opt(year, month, day).unwrap();
