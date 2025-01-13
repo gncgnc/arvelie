@@ -28,9 +28,8 @@ pub fn from_arvelie_month_day(arv: &str, year: i32) -> Result<NaiveDate, String>
             } else {
                 26
             };
-            Ok(NaiveDate::from_ymd_opt(year, 1, 1)
-                .unwrap()
-                .with_ordinal(day + month * 14 + 1)
+            let ordinal = day + month * 14 + 1;
+            Ok(NaiveDate::from_yo_opt(year, ordinal)
                 .ok_or(format!("lol out bounds - month = {month}, day = {day}"))?)
         }
         _ => Err("lol no".to_string()),
