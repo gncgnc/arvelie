@@ -91,4 +91,20 @@ mod tests {
         // A12 2025-01-13
         check_roundtrip("A12", 2025, 1, 13);
     }
+
+    #[test]
+    fn errors() {
+        assert_eq!(
+            Err(Error::InvalidArvelie),
+            from_arvelie_month_day("A14", 2020)
+        );
+        assert_eq!(
+            Err(Error::InvalidArvelie),
+            from_arvelie_month_day("@21", 2020)
+        );
+        assert_eq!(
+            Err(Error::InvalidArvelie),
+            from_arvelie_month_day("BX1", 2020)
+        );
+    }
 }
