@@ -2,6 +2,9 @@
 name = "arvelie"
 version = "0.1.0"
 edition = "2021"
+license = "MIT"
+description = "Convertors for the Arvelie date system. See https://wiki.xxiivv.com/site/arvelie.html"
 
 [dependencies]
 chrono = "0.4.38"
+
