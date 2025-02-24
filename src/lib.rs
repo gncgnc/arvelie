@@ -6,7 +6,7 @@ pub enum Error {
 }
 
 pub fn to_arvelie_month_day(date: NaiveDate) -> String {
-    let month_num = date.ordinal() / 14;
+    let month_num = (date.ordinal() - 1) / 14;
     let month_letter = if month_num < 26 {
         std::char::from_u32(month_num + 'A' as u32).unwrap()
     } else {
@@ -92,6 +92,16 @@ mod tests {
     fn today() {
         // A12 2025-01-13
         check_roundtrip("A12", 2025, 1, 13);
+    }
+
+    #[test]
+    fn last_day_of_month() {
+        check_roundtrip("D13", 2025, 2, 25);
+    }
+
+    #[test]
+    fn last_day_of_month_2() {
+        check_roundtrip("F13", 2010, 3, 25);
     }
 
     #[test]
