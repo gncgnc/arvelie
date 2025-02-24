@@ -4,6 +4,12 @@ version = "0.1.0"
 edition = "2021"
 license = "MIT"
 description = "Convertors for the Arvelie date system. See https://wiki.xxiivv.com/site/arvelie.html"
+keywords = ["date", "time"]
+repository = "https://github.com/gncgnc/arvelie"
+
+[[bin]]
+name = "arvelie"
+path = "src/bin.rs"
 
 [dependencies]
 chrono = "0.4.38"
